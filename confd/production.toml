@@ -1,0 +1,8 @@
+[template]
+src = "production.tmpl"
+dest = "/config/production.json"
+keys = [
+    "/configuration/logger/level",
+    "/configuration/swagger/jsonPath",
+    "/configuration/swagger/uiPath"
+]
