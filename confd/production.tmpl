@@ -1,0 +1,9 @@
+{
+  "swagger": {
+    "jsonPath": "{{ getv "/configuration/swagger/jsonPath" "/api-json" }}",
+    "uiPath": "{{ getv "/configuration/swagger/uiPath" "/api-docs" }}"
+  },
+  "logger": {
+    "level": "{{ getv "/configuration/logger/level" "error" }}"
+  }
+}
