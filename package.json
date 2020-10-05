@@ -6,7 +6,7 @@
   "scripts": {
     "test:unit": "jest --coverage --testPathPattern=\"./src/tests/unit/.*.spec.ts\" --reporters='default' --reporters='jest-html-reporters' --watchAll=false",
     "test:integration": "jest --testPathPattern=\"./src/tests/integration/.*.spec.ts\"",
-    "lint": "eslint src/**",
+    "lint": "eslint --ignore-pattern \"src/migration\" \"src/**\"",
     "lint:fix": "eslint --fix src/**",
     "release": "standard-version",
     "test": "npm run lint && npm run test:unit && npm run test:integration",
