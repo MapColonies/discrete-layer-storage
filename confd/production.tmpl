@@ -5,5 +5,29 @@
   },
   "logger": {
     "level": "{{ getv "/configuration/logger/level" "error" }}"
-  }
+  },
+  "typeOrm": {
+   "type": "{{ getv "/configuration/db/type" "postgres" }}",
+   "host": "{{ getv "/configuration/db/host" "localhost" }}",
+   "port": {{ getv "/configuration/db/port" "5432" }},
+   "username": "{{ getv "/configuration/db/username" "test" }}",
+   "password": "{{ getv "/configuration/db/password" "test" }}",
+   "database": "{{ getv "/configuration/db/database" "test" }}",
+   "synchronize": {{ getv "/configuration/db/synchronize" "true" }},
+   "logging": {{ getv "/configuration/db/logging" "false" }},
+   "entities": [
+      "src/entity/**/*.ts"
+   ],
+   "migrations": [
+      "src/migration/**/*.ts"
+   ],
+   "subscribers": [
+      "src/subscriber/**/*.ts"
+   ],
+   "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+   }
+}
 }
