@@ -1,10 +1,15 @@
 import swaggerUi from 'swagger-ui-express';
 import { get } from 'config';
 import { MCLogger } from '@map-colonies/mc-logger';
-import { Request, Response, RequestHandler, NextFunction } from 'express';
+import { Request, Response, RequestHandler } from 'express';
 import { load } from 'yamljs';
 import { injectable, delay, inject } from 'tsyringe';
 import { config as initDotEnv } from 'dotenv';
+
+interface SwaggerServer  { 
+  [key: string]: unknown,
+  url: string;
+};
 
 @injectable()
 export class SwaggerController {
@@ -37,6 +42,7 @@ export class SwaggerController {
     initDotEnv();
     const host: string = process.env.HOST ?? 'http://localhost';
     const port: string = process.env.SERVER_PORT ?? '80';
-    this.swaggerDoc.servers[0].url = `${host}:${port}`;
+    const servers = ((this.swaggerDoc.servers) as SwaggerServer[]);
+    servers[0].url = `${host}:${port}`;
   }
 }
