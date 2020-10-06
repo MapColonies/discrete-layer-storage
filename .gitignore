@@ -1,5 +1,6 @@
 # Custom gitignors ignores goes here, below
 jest_html_reporters.html
+src/migration/ormConfig.json
 
 #CONFD
 config
