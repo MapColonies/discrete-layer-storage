@@ -4,9 +4,7 @@ const exec = require('child_process').exec;
 let version = require('../../package.json').version;
 
 const replacePattern = new RegExp('[.]','g');
-console.log(version);
 version = version.replace(replacePattern,'_');
-console.log(version);
 const name = `migration-V${version}`;
 
 const ormConfig = config.get('typeOrm');
