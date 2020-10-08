@@ -2,6 +2,7 @@ import express from 'express';
 import { initAsync as validatorInit } from 'openapi-validator-middleware';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { injectable } from 'tsyringe';
+import {json as jsonParser} from 'body-parser';
 import { RequestLogger } from './middleware/RequestLogger';
 import { ErrorHandler } from './middleware/ErrorHandler';
 import { globalRouter } from './routers/global';
@@ -22,14 +23,12 @@ export class ServerBuilder {
     //initiate swagger validator
     await validatorInit('./docs/openapi3.yaml');
 
-    this.registerMiddleware();
+    this.serverInstance.use(jsonParser());
+    this.serverInstance.use(this.requestLogger.getLoggerMiddleware());
     this.serverInstance.use(globalRouter);
+    this.serverInstance.use(this.errorHandler.getErrorHandlerMiddleware());
 
     return this.serverInstance;
   }
 
-  private registerMiddleware(): void {
-    this.serverInstance.use(this.requestLogger.getLoggerMiddleware());
-    this.serverInstance.use(this.errorHandler.getErrorHandlerMiddleware());
-  }
 }

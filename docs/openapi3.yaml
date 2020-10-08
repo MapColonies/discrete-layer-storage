@@ -1,40 +1,130 @@
 openapi: 3.0.1
 info:
-  title: service-name
-  description: basic template for map colonies service
+  title: Image Indexer Service
+  description: api for cataloging raster location and metadata
   version: 1.0.0
 servers:
   - url: http://localhost:1337
 paths:
-  /helloworld:
-    get:
-      tags:
-        - helloWorld
-      summary: hello world
+  /images:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateImageDataRequest"
       responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/helloWorld"
+        "201":
+          description: ""
+      tags:
+        - images
+    put:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateImageDataRequest"
+      responses:
+        "200":
+          description: ""
+      tags:
+        - images
+  "/images/{id}":
+    get:
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      responses:
+        "200":
+          description: ""
+      tags:
+        - images
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      responses:
+        "200":
+          description: ""
+      tags:
+        - images
+  "/images/exists/{id}":
+    get:
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      responses:
+        "200":
+          description: ""
+      tags:
+        - images
 components:
   parameters:
     idParam:
       name: id
-      in: query
+      in: path
       description: id of requested item
       required: true
       schema:
         type: string
         format: uuid
   schemas:
-    helloWorld:
-      required:
-        - hello
+    CreateImageMetadata:
       type: object
       properties:
-        hello:
+        date:
+          format: date-time
           type: string
-      example:
-        hello: world
+          description: the date the raster was created
+      required:
+        - date
+    CreateImageDataRequest:
+      type: object
+      properties:
+        additionalData:
+          $ref: "#/components/schemas/CreateImageMetadata"
+        file:
+          type: string
+          description: the main data file save location
+        additionalFiles:
+          description: locations of the additional files
+          type: array
+          items:
+            type: string
+        id:
+          type: string
+          format: uuid
+      required:
+        - additionalData
+        - file
+        - additionalFiles
+        - id
+    UpdateImageMetadata:
+      type: object
+      properties:
+        date:
+          format: date-time
+          type: string
+          description: the date the raster was created
+      required:
+        - date
+    UpdateImageDataRequest:
+      type: object
+      properties:
+        additionalData:
+          $ref: "#/components/schemas/UpdateImageMetadata"
+        file:
+          type: string
+          description: the main data file save location
+        additionalFiles:
+          description: locations of the additional files
+          type: array
+          items:
+            type: string
+        id:
+          type: string
+          format: uuid
+      required:
+        - additionalData
+        - file
+        - additionalFiles
+        - id
