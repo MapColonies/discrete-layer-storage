@@ -13,7 +13,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateImageDataRequest"
+              $ref: "http://localhost/Schema/ImageMetadata/ImageMetadata-CreateDb.json"
       responses:
         "201":
           description: ""
@@ -25,7 +25,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateImageDataRequest"
+              $ref: "http://localhost/Schema/ImageMetadata/ImageMetadata-Update.json"
       responses:
         "200":
           description: ""
@@ -67,64 +67,3 @@ components:
       schema:
         type: string
         format: uuid
-  schemas:
-    CreateImageMetadata:
-      type: object
-      properties:
-        date:
-          format: date-time
-          type: string
-          description: the date the raster was created
-      required:
-        - date
-    CreateImageDataRequest:
-      type: object
-      properties:
-        additionalData:
-          $ref: "#/components/schemas/CreateImageMetadata"
-        file:
-          type: string
-          description: the main data file save location
-        additionalFiles:
-          description: locations of the additional files
-          type: array
-          items:
-            type: string
-        id:
-          type: string
-          format: uuid
-      required:
-        - additionalData
-        - file
-        - additionalFiles
-        - id
-    UpdateImageMetadata:
-      type: object
-      properties:
-        date:
-          format: date-time
-          type: string
-          description: the date the raster was created
-      required:
-        - date
-    UpdateImageDataRequest:
-      type: object
-      properties:
-        additionalData:
-          $ref: "#/components/schemas/UpdateImageMetadata"
-        file:
-          type: string
-          description: the main data file save location
-        additionalFiles:
-          description: locations of the additional files
-          type: array
-          items:
-            type: string
-        id:
-          type: string
-          format: uuid
-      required:
-        - additionalData
-        - file
-        - additionalFiles
-        - id
