@@ -1,14 +1,17 @@
 import { Repository, EntityRepository } from 'typeorm';
-import { delay, inject } from 'tsyringe';
+import { container, delay, inject } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { ImageData } from '../entity/ImageData';
 
 @EntityRepository(ImageData)
 export class ImageDataRepository extends Repository<ImageData> {
+
+  private readonly mcLogger: MCLogger; //don't override internal repository logger.
+
   public constructor(
-    @inject(delay(() => MCLogger)) private readonly logger: MCLogger
   ) {
     super();
+    this.mcLogger = container.resolve(MCLogger); //direct injection don't work here due to being initialized by typeOrm
   }
 
   public async get(id: string): Promise<ImageData | undefined> {
@@ -20,7 +23,7 @@ export class ImageDataRepository extends Repository<ImageData> {
     if (!exists) {
       await this.save(image);
     } else {
-      this.logger.info('duplicate value error has occurred');
+      this.mcLogger.info('duplicate value error has occurred');
       //TODO: replace with custom exception type and handle in service
       throw new Error('duplicate entry inserted');
     }
@@ -31,7 +34,7 @@ export class ImageDataRepository extends Repository<ImageData> {
     if (exists) {
       await this.save(image);
     } else {
-      this.logger.info('attempt to update non existing record has occurred');
+      this.mcLogger.info('attempt to update non existing record has occurred');
       //TODO: replace with custom exception type and handle in service
       throw new Error('invalid update');
     }
@@ -42,7 +45,7 @@ export class ImageDataRepository extends Repository<ImageData> {
     if (image) {
       await this.delete({ id: id });
     } else {
-      this.logger.info('attempt to delete non existing record has occurred');
+      this.mcLogger.info('attempt to delete non existing record has occurred');
       //TODO: replace with custom exception type and handle in service
       throw new Error('image to delete was not found');
     }

@@ -28,18 +28,36 @@ export class ImagesController {
       success: true,
       data: data,
     };
-    return res;
+    return res.status(httpStatus.OK).json(body);
   }
 
-  public update(req: Request, res: Response): Response {
-    return res;
+  public async update(req: Request, res: Response): Promise<Response> {
+    const image = req.body as ImageMetadata;
+    await this.service.update(image);
+    const body: ApiHttpResponse = {
+      success: true,
+    };
+    return res.status(httpStatus.OK).json(body);
   }
 
-  public delete(req: Request, res: Response): Response {
-    return res;
+  public async delete(req: Request, res: Response): Promise<Response> {
+    const id = req.params['id'];
+    await this.service.delete(id);
+    const body: ApiHttpResponse = {
+      success: true
+    };
+    return res.status(httpStatus.OK).json(body);
   }
 
-  public exists(req: Request, res: Response): Response {
-    return res;
+  public async exists(req: Request, res: Response): Promise<Response> {
+    const id = req.params['id'];
+    const exist = await this.service.exists(id);
+    const body: ApiHttpResponse = {
+      success: true,
+      data:{
+        exists: exist
+      }
+    };
+    return res.status(httpStatus.OK).json(body);
   }
 }
