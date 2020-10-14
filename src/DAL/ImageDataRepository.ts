@@ -24,7 +24,7 @@ export class ImageDataRepository extends Repository<ImageData> {
       this.mcLogger.info(`creating ImageData record with id: ${image.id}`);
       await this.save(image);
     } else {
-      this.mcLogger.info('duplicate value error has occurred');
+      this.mcLogger.info(`duplicate value error has occurred when creating image "${image.id}"`);
       //TODO: replace with custom exception type and handle in service
       throw new Error('duplicate entry inserted');
     }
@@ -36,7 +36,7 @@ export class ImageDataRepository extends Repository<ImageData> {
       this.mcLogger.info(`updating ImageData record with id: ${image.id}`);
       await this.save(image);
     } else {
-      this.mcLogger.info('attempt to update non existing record has occurred');
+      this.mcLogger.info(`attempt to update non existing record "${image.id}" has occurred`);
       //TODO: replace with custom exception type and handle in service
       throw new Error('invalid update');
     }
@@ -48,7 +48,7 @@ export class ImageDataRepository extends Repository<ImageData> {
       this.mcLogger.info(`deleting ImageData record with id: ${image.id}`);
       await this.delete({ id: id });
     } else {
-      this.mcLogger.info('attempt to delete non existing record has occurred');
+      this.mcLogger.info(`attempt to delete non existing record "${id}" has occurred`);
       //TODO: replace with custom exception type and handle in service
       throw new Error('image to delete was not found');
     }
