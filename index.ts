@@ -1,4 +1,4 @@
-//this import must be called before the first import of tsyring
+//this import must be called before the first import of tsyring and typeOrm
 import 'reflect-metadata';
 import { config as initDotEnv } from 'dotenv';
 import { Probe } from '@map-colonies/mc-probe';

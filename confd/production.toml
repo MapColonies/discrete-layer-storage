@@ -4,5 +4,13 @@ dest = "/config/production.json"
 keys = [
     "/configuration/logger/level",
     "/configuration/swagger/jsonPath",
-    "/configuration/swagger/uiPath"
+    "/configuration/swagger/uiPath",
+    "/configuration/db/type",
+    "/configuration/db/host",
+    "/configuration/db/port",
+    "/configuration/db/username",
+    "/configuration/db/password",
+    "/configuration/db/database",
+    "/configuration/db/synchronize",
+    "/configuration/db/logging"
 ]

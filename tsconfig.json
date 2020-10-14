@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "lib": ["es5", "es6"],
     "target": "ES5",
     "module": "commonjs",
     "declaration": true,
@@ -9,7 +10,9 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "sourceMap": true,
+    "strictPropertyInitialization":false
   },
   "include": ["./src", "index.ts"],
   "exclude": ["node_modules", "dist"]
