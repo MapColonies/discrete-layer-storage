@@ -1,12 +1,9 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status-codes';
 import { injectable } from 'tsyringe';
-import {
-  ImageMetadata,
-  ApiHttpResponse,
-  ApiHttpError,
-} from '@map-colonies/mc-model-types';
+import { ImageMetadata, ApiHttpResponse } from '@map-colonies/mc-model-types';
 import { ImagesService } from '../services/ImageService';
+import { SearchOptions } from '../models/searchOptions';
 
 @injectable()
 export class ImagesController {
@@ -44,7 +41,7 @@ export class ImagesController {
     const id = req.params['id'];
     await this.service.delete(id);
     const body: ApiHttpResponse = {
-      success: true
+      success: true,
     };
     return res.status(httpStatus.OK).json(body);
   }
@@ -54,9 +51,21 @@ export class ImagesController {
     const exist = await this.service.exists(id);
     const body: ApiHttpResponse = {
       success: true,
-      data:{
-        exists: exist
-      }
+      data: {
+        exists: exist,
+      },
+    };
+    return res.status(httpStatus.OK).json(body);
+  }
+
+  public async search(req: Request, res: Response): Promise<Response> {
+    const options = req.body as SearchOptions;
+    const data = await this.service.search(options);
+    const body: ApiHttpResponse = {
+      success: true,
+      data: {
+        matchingImages: data,
+      },
     };
     return res.status(httpStatus.OK).json(body);
   }

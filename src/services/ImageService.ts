@@ -1,8 +1,10 @@
 import { injectable } from 'tsyringe';
 import { ImageMetadata } from '@map-colonies/mc-model-types';
+import { Geometry } from 'geojson';
 import { ConnectionManager } from '../DAL/ConnectionManager';
 import { ImageDataRepository } from '../DAL/ImageDataRepository';
 import { ImageData } from '../entity/ImageData';
+import { SearchOptions } from '../models/searchOptions';
 
 @injectable()
 export class ImagesService {
@@ -42,6 +44,13 @@ export class ImagesService {
     await repository.deleteImageData(id);
   }
 
+  public async search(options: SearchOptions): Promise<ImageMetadata[]>{
+    const repository = await this.getRepository();
+    const rawRes = await repository.search(options);
+    const res = rawRes.map(value => this.entityToModel(value));
+    return res;
+  }
+
   private async getRepository(): Promise<ImageDataRepository> {
     if (!this.repository) {
       if (!this.connectionManager.isConnected()) {
@@ -57,6 +66,7 @@ export class ImagesService {
     imageMetadata.creationTime = image.date;
     imageMetadata.id = image.id;
     imageMetadata.imageUri = image.imageLocation;
+    imageMetadata.footprint = image.footprint;
     return imageMetadata;
   }
 
@@ -66,6 +76,7 @@ export class ImagesService {
       date: model.creationTime,
       imageLocation: model.imageUri,
       additionalData: JSON.stringify(model),
+      footprint: model.footprint as Geometry
     });
     return entity;
   }
