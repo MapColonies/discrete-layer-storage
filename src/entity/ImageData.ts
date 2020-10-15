@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Geometry } from 'geojson';
+import { Entity, Column, PrimaryColumn, Index } from 'typeorm';
+
 
 @Entity()
 export class ImageData {
@@ -13,6 +15,13 @@ export class ImageData {
 
   @Column('text')
   public additionalData: string;
+
+  @Column('geometry',{
+      spatialFeatureType: "Geometry",
+      srid: 4326
+  })
+  @Index({ spatial: true })
+  public footprint : Geometry
 
   public constructor(init?: Partial<ImageData>) {
     Object.assign(this, init);
