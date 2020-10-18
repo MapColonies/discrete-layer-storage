@@ -1,5 +1,5 @@
 import { MCLogger } from '@map-colonies/mc-logger';
-import { ApiHttpError, ApiHttpResponse } from '@map-colonies/mc-model-types';
+import { ApiHttpResponse } from '@map-colonies/mc-model-types';
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { injectable } from 'tsyringe';
 import { StatusCodes } from 'http-status-codes';

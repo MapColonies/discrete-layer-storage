@@ -57,6 +57,23 @@ paths:
           description: ""
       tags:
         - images
+  "/images/search":
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/searchOptions"
+      responses:
+        "200":
+          description: "list of matching image metadatas"
+          content:
+            application/json:
+              schema:
+                $ref: "http://localhost/Schema/Http/ImageMetadataArrayResponse.json"
+      tags:
+        - images
 components:
   parameters:
     idParam:
@@ -67,3 +84,16 @@ components:
       schema:
         type: string
         format: uuid
+  schemas:
+    searchOptions:
+      type: object
+      properties:
+        geometry:
+          type: object
+          oneOf:
+            - $ref: "http://localhost/Schema/geojson/Point.json"
+            - $ref: "http://localhost/Schema/geojson/Polygon.json"
+          example: {
+              "type": "Point",
+              "coordinates": [125.6, 10.1]
+            }

@@ -1,7 +1,9 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
 import { container } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
+import { Geometry } from 'geojson';
 import { ImageData } from '../entity/ImageData';
+import { SearchOptions } from '../models/searchOptions';
 
 @EntityRepository(ImageData)
 export class ImageDataRepository extends Repository<ImageData> {
@@ -52,5 +54,20 @@ export class ImageDataRepository extends Repository<ImageData> {
       //TODO: replace with custom exception type and handle in service
       throw new Error('image to delete was not found');
     }
+  }
+
+  public async search(options: SearchOptions) : Promise<ImageData[]>
+  {
+    //TODO: add res order: asc / desc
+    let builder = this.createQueryBuilder('image');
+    if (options.geometry){
+      builder = this.addFootprintFilter(builder,options.geometry);
+    }
+    return builder.getMany();
+  }
+
+  private addFootprintFilter(builder:SelectQueryBuilder<ImageData>, geometry:Geometry):SelectQueryBuilder<ImageData>{
+    return builder.where('ST_Intersects(image.footprint, ST_SetSRID(ST_GeomFromGeoJSON(:geometry),4326))')
+    .setParameter('geometry',geometry);
   }
 }
