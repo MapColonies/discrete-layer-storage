@@ -113,7 +113,6 @@ describe('Image repository test', () => {
       const searchOptions = buildSearchOptions(options.value);
       await imagesRepo.search(searchOptions);
       expect(getQueryBuilder).toHaveBeenCalledTimes(1);
-      console.log(JSON.stringify(options.value));
       expect(queryBuilder.where).toHaveBeenCalledTimes(options.value.length);
       let paramCount =0;
       for (const opt of options.value){
