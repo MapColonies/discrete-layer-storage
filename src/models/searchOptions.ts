@@ -3,7 +3,7 @@ import { Geometry } from "geojson";
 
 export class SearchOptions{
 
-    public footprint?: Geometry;
+    public geometry?: Geometry;
 
     public constructor(init?: Partial<SearchOptions>) {
         Object.assign(this, init);

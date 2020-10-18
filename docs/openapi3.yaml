@@ -88,7 +88,7 @@ components:
     searchOptions:
       type: object
       properties:
-        footprint:
+        geometry:
           type: object
           oneOf:
             - $ref: "http://localhost/Schema/geojson/Point.json"

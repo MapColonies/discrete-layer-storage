@@ -60,13 +60,14 @@ export class ImageDataRepository extends Repository<ImageData> {
   {
     //TODO: add res order: asc / desc
     let builder = this.createQueryBuilder('image');
-    if (options.footprint)
-      builder = this.addFootprintFilter(builder,options.footprint);
+    if (options.geometry){
+      builder = this.addFootprintFilter(builder,options.geometry);
+    }
     return builder.getMany();
   }
 
-  private addFootprintFilter(builder:SelectQueryBuilder<ImageData>, footprint:Geometry):SelectQueryBuilder<ImageData>{
-    return builder.where('ST_Intersects(image.footprint, ST_SetSRID(ST_GeomFromGeoJSON(:footprint),4326))')
-    .setParameter('footprint',footprint);
+  private addFootprintFilter(builder:SelectQueryBuilder<ImageData>, geometry:Geometry):SelectQueryBuilder<ImageData>{
+    return builder.where('ST_Intersects(image.footprint, ST_SetSRID(ST_GeomFromGeoJSON(:geometry),4326))')
+    .setParameter('geometry',geometry);
   }
 }

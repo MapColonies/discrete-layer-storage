@@ -5,7 +5,6 @@ import { MCLogger } from '@map-colonies/mc-logger';
 import { ImageDataRepository } from '../../DAL/ImageDataRepository';
 import { ImageData } from '../../entity/ImageData';
 import { SearchOptions } from '../../models/searchOptions'
-import e from 'express';
 interface SearchOption {
   query:string,
   parameters: [{
@@ -89,9 +88,9 @@ describe('Image repository test', () => {
     imagesRepo.createQueryBuilder = getQueryBuilder;
     //search options
     const footprintOption: SearchOption = {
-      query:'ST_Intersects(image.footprint, ST_SetSRID(ST_GeomFromGeoJSON(:footprint),4326))',
+      query:'ST_Intersects(image.footprint, ST_SetSRID(ST_GeomFromGeoJSON(:geometry),4326))',
       parameters: [
-        {key: 'footprint', value: {
+        {key: 'geometry', value: {
           type: "Point",
           coordinates: [100.5, 0.5]
         }}
@@ -114,7 +113,7 @@ describe('Image repository test', () => {
       await imagesRepo.search(searchOptions);
       expect(getQueryBuilder).toHaveBeenCalledTimes(1);
       expect(queryBuilder.where).toHaveBeenCalledTimes(options.value.length);
-      let paramCount =0;
+      let paramCount = 0;
       for (const opt of options.value){
         expect(queryBuilder.where).toHaveBeenCalledWith(opt.query);
         paramCount += opt.parameters.length;
@@ -135,9 +134,6 @@ describe('Image repository test', () => {
 // Generate all array subsets:
 function* subsets<T>(array: T[], offset = 0): IterableIterator<T[]> {
   const empty:T[] =[];
-  //if(array.length <= offset)
-  //  yield empty;
-  //else{
   while(array.length> offset)
   {
     const iterator = subsets<T>(array,offset+1)
