@@ -1,12 +1,12 @@
 import {
   createConnection,
   Connection,
-  ConnectionOptions,
   ObjectType,
 } from 'typeorm';
 import config from 'config';
 import { delay, inject, injectable } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { ImageDataRepository } from './ImageDataRepository';
 
 @injectable()
@@ -18,7 +18,8 @@ export class ConnectionManager {
   ) {}
 
   public async init(): Promise<void> {
-    const connectionConfig = config.get<ConnectionOptions>('typeOrm');
+    const connectionConfig = config.get<PostgresConnectionOptions>('typeOrm');
+    this.logger.info(`connection to database ${connectionConfig.database as string} on ${connectionConfig.host as string}`)
     try {
       this.connection = await createConnection(connectionConfig);
     } catch (err) {

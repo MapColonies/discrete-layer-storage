@@ -41,7 +41,7 @@ export class ImagesController {
     const id = req.params['id'];
     await this.service.delete(id);
     const body: ApiHttpResponse = {
-      success: true,
+      success: true
     };
     return res.status(httpStatus.OK).json(body);
   }
