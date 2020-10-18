@@ -11,6 +11,7 @@ export class ImageData {
   public imageLocation: string;
 
   @Column()
+  @Index()
   public date: Date;
 
   @Column('text')

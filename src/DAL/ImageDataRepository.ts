@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { Geometry } from 'geojson';
 import { ImageData } from '../entity/ImageData';
-import { SearchOptions } from '../models/searchOptions';
+import { OrderFiled, SearchOptions } from '../models/searchOptions';
 
 @EntityRepository(ImageData)
 export class ImageDataRepository extends Repository<ImageData> {
@@ -60,14 +60,51 @@ export class ImageDataRepository extends Repository<ImageData> {
   {
     //TODO: add res order: asc / desc
     let builder = this.createQueryBuilder('image');
+    let first=true;
+    //add filters
     if (options.geometry){
-      builder = this.addFootprintFilter(builder,options.geometry);
+      builder = this.addFootprintFilter(builder,options.geometry,first);
+      first = false;
     }
+    if (options.startDate){
+      builder = this.addStartDate(builder,options.startDate,first);
+      first = false;
+    }
+    if (options.endDate){
+      builder = this.addEndDate(builder,options.endDate,first);
+      first = false;
+    }
+
+    //add order
+    let order: "ASC" | "DESC" = "ASC"
+    let orderBy = OrderFiled.DATE;
+    if(options.sort){
+      if(options.sort.desc){
+        order = "DESC"
+      }
+      orderBy = options.sort.orderBy;
+    }
+    builder = builder.orderBy(orderBy.toString(),order);
+    //TODO: add pagination and limit result size
     return builder.getMany();
   }
 
-  private addFootprintFilter(builder:SelectQueryBuilder<ImageData>, geometry:Geometry):SelectQueryBuilder<ImageData>{
-    return builder.where('ST_Intersects(image.footprint, ST_SetSRID(ST_GeomFromGeoJSON(:geometry),4326))')
-    .setParameter('geometry',geometry);
+  private addFootprintFilter(builder:SelectQueryBuilder<ImageData>, geometry:Geometry,first: boolean):SelectQueryBuilder<ImageData>{
+    const filter = 'ST_Intersects(image.footprint, ST_SetSRID(ST_GeomFromGeoJSON(:geometry),4326))';
+    builder = first ? builder.where(filter) : builder.andWhere(filter);
+    return builder.setParameter('geometry',geometry);
   }
+
+  private addStartDate(builder:SelectQueryBuilder<ImageData>, startDate:Date,first: boolean):SelectQueryBuilder<ImageData>{
+    const filter = 'image.date >= :startDate';
+    builder = first ? builder.where(filter) : builder.andWhere(filter);
+    return builder.setParameter('startDate',startDate);
+  }
+
+  private addEndDate(builder:SelectQueryBuilder<ImageData>, endDate:Date,first: boolean):SelectQueryBuilder<ImageData>{
+    const filter = 'image.date <= :endDate';
+    builder = first ? builder.where(filter) : builder.andWhere(filter);
+    return builder.setParameter('endDate',endDate);
+  }
+
 }
