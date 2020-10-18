@@ -10,13 +10,22 @@ const model: ImageMetadata ={
   imageUri: "test/location",
   id: "testId",
   creationTime: new Date("1/1/2020"),
-  height: 78
+  height: 78,
+  footprint: {
+    type: "Polygon",
+    coordinates: [[[100,0],[101,0],[101,1],[100,1],[100,0]]]
+  }
 }
 const entity: ImageData = {
-  additionalData: "{\"imageUri\":\"test/location\",\"id\":\"testId\",\"creationTime\":\"2019-12-31T22:00:00.000Z\",\"height\":78}",
+  additionalData: "{\"imageUri\":\"test/location\",\"id\":\"testId\",\"creationTime\":\"2019-12-31T22:00:00.000Z\",\"height\":78,"+
+  "\"footprint\":{\"type\":\"Polygon\",\"coordinates\":[[[100,0],[101,0],[101,1],[100,1],[100,0]]]}}",
   date: new Date("1/1/2020"),
   id: "testId",
-  imageLocation: "test/location"
+  imageLocation: "test/location",
+  footprint: {
+    type: "Polygon",
+    coordinates: [[[100,0],[101,0],[101,1],[100,1],[100,0]]]
+  }
 }
 
 describe('Image service test', () => {
