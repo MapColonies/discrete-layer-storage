@@ -66,7 +66,6 @@ export class ImageDataRepository extends Repository<ImageData> {
   }
 
   private addFootprintFilter(builder:SelectQueryBuilder<ImageData>, footprint:Geometry):SelectQueryBuilder<ImageData>{
-    console.log(footprint);
     return builder.where('ST_Intersects(image.footprint, ST_SetSRID(ST_GeomFromGeoJSON(:footprint),4326))')
     .setParameter('footprint',footprint);
   }

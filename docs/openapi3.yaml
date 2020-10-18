@@ -71,7 +71,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/searchResponse"
+                $ref: "http://localhost/Schema/Http/ImageMetadataArrayResponse.json"
       tags:
         - images
 components:
@@ -97,17 +97,3 @@ components:
               "type": "Point",
               "coordinates": [125.6, 10.1]
             }
-    searchResponse:
-      allof:
-        - $ref: "http://localhost/Schema/Http/ApiHttpResponse.base.json#/definitions/ApiHttpResponse"
-        - $ref: "#/components/schemas/searchResponseData"
-    searchResponseData:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            matchingImages:
-              type: array
-              items:
-                $ref: "http://localhost/Schema/ImageMetadata/ImageMetadata.base.json"
