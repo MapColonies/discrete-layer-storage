@@ -92,11 +92,11 @@ export class ImageDataRepository extends Repository<ImageData> {
     options: SearchOptions,
     builder: SelectQueryBuilder<ImageData>
   ): SelectQueryBuilder<ImageData> {
-    let order: 'ASC' | 'DESC' = 'ASC';
+    let order: 'ASC' | 'DESC' = 'DESC';
     let orderBy = OrderFiled.DATE;
     if (options.sort) {
-      if (options.sort.desc) {
-        order = 'DESC';
+      if (!options.sort.desc) {
+        order = 'ASC';
       }
       orderBy = options.sort.orderBy;
     }
