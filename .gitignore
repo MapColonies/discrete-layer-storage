@@ -9,6 +9,9 @@ confd/**
 !confd/*.tmpl
 !confd/*.toml
 
+#config for tests to work
+!config/test.json
+
 #IDE
 .vscode
 .idea
