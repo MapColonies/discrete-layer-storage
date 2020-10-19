@@ -110,3 +110,6 @@ components:
             desc:
               type: boolean
               example: true
+          required:
+            - desc
+            - orderBy

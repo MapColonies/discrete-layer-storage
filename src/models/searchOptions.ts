@@ -1,6 +1,6 @@
 import { Geometry } from 'geojson';
 
-export enum OrderFiled {
+export enum OrderField {
   DATE = 'date',
 }
 
@@ -11,7 +11,7 @@ export class SearchOptions {
 
   public sort?: {
     desc: boolean;
-    orderBy: OrderFiled;
+    orderBy: OrderField;
   };
 
   public constructor(init?: Partial<SearchOptions>) {

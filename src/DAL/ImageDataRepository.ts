@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { Geometry } from 'geojson';
 import { ImageData } from '../entity/ImageData';
-import { OrderFiled, SearchOptions } from '../models/searchOptions';
+import { OrderField, SearchOptions } from '../models/searchOptions';
 
 @EntityRepository(ImageData)
 export class ImageDataRepository extends Repository<ImageData> {
@@ -93,7 +93,7 @@ export class ImageDataRepository extends Repository<ImageData> {
     builder: SelectQueryBuilder<ImageData>
   ): SelectQueryBuilder<ImageData> {
     let order: 'ASC' | 'DESC' = 'DESC';
-    let orderBy = OrderFiled.DATE;
+    let orderBy: OrderField = OrderField.DATE;
     if (options.sort) {
       if (!options.sort.desc) {
         order = 'ASC';

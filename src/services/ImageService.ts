@@ -44,10 +44,10 @@ export class ImagesService {
     await repository.deleteImageData(id);
   }
 
-  public async search(options: SearchOptions): Promise<ImageMetadata[]>{
+  public async search(options: SearchOptions): Promise<ImageMetadata[]> {
     const repository = await this.getRepository();
     const rawRes = await repository.search(options);
-    const res = rawRes.map(value => this.entityToModel(value));
+    const res = rawRes.map((value) => this.entityToModel(value));
     return res;
   }
 
@@ -63,7 +63,7 @@ export class ImagesService {
 
   private entityToModel(image: ImageData): ImageMetadata {
     const imageMetadata = JSON.parse(image.additionalData) as ImageMetadata;
-    imageMetadata.creationTime = image.date;
+    imageMetadata.imagingTime = image.imagingTime;
     imageMetadata.id = image.id;
     imageMetadata.imageUri = image.imageLocation;
     imageMetadata.footprint = image.footprint;
@@ -73,10 +73,10 @@ export class ImagesService {
   private modelToEntity(model: ImageMetadata): ImageData {
     const entity = new ImageData({
       id: model.id,
-      date: model.creationTime,
+      imagingTime: model.imagingTime,
       imageLocation: model.imageUri,
       additionalData: JSON.stringify(model),
-      footprint: model.footprint as Geometry
+      footprint: model.footprint as Geometry,
     });
     return entity;
   }
