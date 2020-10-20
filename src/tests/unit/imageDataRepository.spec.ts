@@ -107,7 +107,7 @@ describe('Image repository test', () => {
       ],
     };
     const startDateOption: SearchOption = {
-      query: 'image.date >= :startDate',
+      query: 'image.imagingTime >= :startDate',
       parameters: [
         {
           key: 'startDate',
@@ -116,7 +116,7 @@ describe('Image repository test', () => {
       ],
     };
     const endDateOption: SearchOption = {
-      query: 'image.date <= :endDate',
+      query: 'image.imagingTime <= :endDate',
       parameters: [
         {
           key: 'endDate',

@@ -1,7 +1,7 @@
 import { Geometry } from 'geojson';
 
 export enum OrderField {
-  DATE = 'date',
+  IMAGING_TIME = 'imagingTime',
 }
 
 export class SearchOptions {

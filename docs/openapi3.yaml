@@ -106,7 +106,7 @@ components:
             orderBy:
               type: string
               enum:
-                - date
+                - imagingTime
             desc:
               type: boolean
               example: true

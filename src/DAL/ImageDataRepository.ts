@@ -93,14 +93,15 @@ export class ImageDataRepository extends Repository<ImageData> {
     builder: SelectQueryBuilder<ImageData>
   ): SelectQueryBuilder<ImageData> {
     let order: 'ASC' | 'DESC' = 'DESC';
-    let orderBy: OrderField = OrderField.DATE;
+    let orderBy: OrderField = OrderField.IMAGING_TIME;
     if (options.sort) {
       if (!options.sort.desc) {
         order = 'ASC';
       }
       orderBy = options.sort.orderBy;
     }
-    builder = builder.orderBy(orderBy.toString(), order);
+    const orderByColumn = `image.${orderBy.toString()}`;
+    builder = builder.orderBy(orderByColumn, order);
     return builder;
   }
 
@@ -120,7 +121,7 @@ export class ImageDataRepository extends Repository<ImageData> {
     startDate: Date,
     first: boolean
   ): SelectQueryBuilder<ImageData> {
-    const filter = 'image.date >= :startDate';
+    const filter = 'image.imagingTime >= :startDate';
     builder = first ? builder.where(filter) : builder.andWhere(filter);
     return builder.setParameter('startDate', startDate);
   }
@@ -130,7 +131,7 @@ export class ImageDataRepository extends Repository<ImageData> {
     endDate: Date,
     first: boolean
   ): SelectQueryBuilder<ImageData> {
-    const filter = 'image.date <= :endDate';
+    const filter = 'image.imagingTime <= :endDate';
     builder = first ? builder.where(filter) : builder.andWhere(filter);
     return builder.setParameter('endDate', endDate);
   }
