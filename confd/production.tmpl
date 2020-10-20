@@ -16,13 +16,13 @@
    "synchronize": {{ getv "/configuration/db/synchronize" "true" }},
    "logging": {{ getv "/configuration/db/logging" "false" }},
    "entities": [
-      "src/entity/**/*.ts"
+      "dist/src/entity/**/*.js"
    ],
    "migrations": [
-      "src/migration/**/*.ts"
+      "dist/src/migration/**/*.js"
    ],
    "subscribers": [
-      "src/subscriber/**/*.ts"
+      "dist/src/subscriber/**/*.js"
    ],
    "cli": {
       "entitiesDir": "src/entity",

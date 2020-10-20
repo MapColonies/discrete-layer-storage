@@ -1,7 +1,6 @@
 import { Geometry } from 'geojson';
 import { Entity, Column, PrimaryColumn, Index } from 'typeorm';
 
-
 @Entity()
 export class ImageData {
   @PrimaryColumn('uuid')
@@ -11,17 +10,18 @@ export class ImageData {
   public imageLocation: string;
 
   @Column()
-  public date: Date;
+  @Index()
+  public imagingTime: Date;
 
   @Column('text')
   public additionalData: string;
 
-  @Column('geometry',{
-      spatialFeatureType: "Geometry",
-      srid: 4326
+  @Column('geometry', {
+    spatialFeatureType: 'Geometry',
+    srid: 4326,
   })
   @Index({ spatial: true })
-  public footprint : Geometry
+  public footprint: Geometry;
 
   public constructor(init?: Partial<ImageData>) {
     Object.assign(this, init);

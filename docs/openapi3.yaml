@@ -93,7 +93,23 @@ components:
           oneOf:
             - $ref: "http://localhost/Schema/geojson/Point.json"
             - $ref: "http://localhost/Schema/geojson/Polygon.json"
-          example: {
-              "type": "Point",
-              "coordinates": [125.6, 10.1]
-            }
+          example: { "type": "Point", "coordinates": [125.6, 10.1] }
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        sort:
+          type: object
+          properties:
+            orderBy:
+              type: string
+              enum:
+                - imagingTime
+            desc:
+              type: boolean
+              example: true
+          required:
+            - desc
+            - orderBy

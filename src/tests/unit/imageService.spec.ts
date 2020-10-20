@@ -6,39 +6,56 @@ import { ImagesService } from '../../services/ImageService';
 import { ConnectionManager } from '../../DAL/ConnectionManager';
 
 //init constant test data
-const model: ImageMetadata ={
-  imageUri: "test/location",
-  id: "testId",
-  creationTime: new Date("1/1/2020"),
+const model: ImageMetadata = {
+  imageUri: 'test/location',
+  id: 'testId',
+  imagingTime: new Date('1/1/2020'),
   height: 78,
   footprint: {
-    type: "Polygon",
-    coordinates: [[[100,0],[101,0],[101,1],[100,1],[100,0]]]
-  }
-}
+    type: 'Polygon',
+    coordinates: [
+      [
+        [100, 0],
+        [101, 0],
+        [101, 1],
+        [100, 1],
+        [100, 0],
+      ],
+    ],
+  },
+};
 const entity: ImageData = {
-  additionalData: "{\"imageUri\":\"test/location\",\"id\":\"testId\",\"creationTime\":\"2019-12-31T22:00:00.000Z\",\"height\":78,"+
-  "\"footprint\":{\"type\":\"Polygon\",\"coordinates\":[[[100,0],[101,0],[101,1],[100,1],[100,0]]]}}",
-  date: new Date("1/1/2020"),
-  id: "testId",
-  imageLocation: "test/location",
+  additionalData:
+    '{"imageUri":"test/location","id":"testId","imagingTime":"2019-12-31T22:00:00.000Z","height":78,' +
+    '"footprint":{"type":"Polygon","coordinates":[[[100,0],[101,0],[101,1],[100,1],[100,0]]]}}',
+  imagingTime: new Date('1/1/2020'),
+  id: 'testId',
+  imageLocation: 'test/location',
   footprint: {
-    type: "Polygon",
-    coordinates: [[[100,0],[101,0],[101,1],[100,1],[100,0]]]
-  }
-}
+    type: 'Polygon',
+    coordinates: [
+      [
+        [100, 0],
+        [101, 0],
+        [101, 1],
+        [100, 1],
+        [100, 0],
+      ],
+    ],
+  },
+};
 
 describe('Image service test', () => {
   let imagesService: ImagesService;
 
-  beforeEach(()=>{
+  beforeEach(() => {
     imagesService = new ImagesService({} as ConnectionManager);
   });
 
   it('model to entity conversion should return entity with all model data', () => {
     //bypass private protection of tested function
-    const service = imagesService as unknown as {
-      modelToEntity : ((model:ImageMetadata) =>ImageData)
+    const service = (imagesService as unknown) as {
+      modelToEntity: (model: ImageMetadata) => ImageData;
     };
     //test
     const actualEntity = service.modelToEntity(model);
@@ -47,8 +64,8 @@ describe('Image service test', () => {
 
   it('entity to model conversion should return model with all entity data', () => {
     //bypass private protection of tested function
-    const service = imagesService as unknown as {
-      entityToModel : ((entity:ImageData) =>ImageMetadata)
+    const service = (imagesService as unknown) as {
+      entityToModel: (entity: ImageData) => ImageMetadata;
     };
     //test
     const actualModel = service.entityToModel(entity);
