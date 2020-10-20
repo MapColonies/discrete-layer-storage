@@ -30,4 +30,4 @@ image metadata can be search by sending any combination of the following field a
 
 - geometry: a geojson (see geojson specifications [here](https://tools.ietf.org/html/rfc7946)) point/polygon object. only metadata of images that intersect with the given polygon/point will be returned.
 - startDate: date string in format: "YYYY-MM-DD". only images that ware imaged form at this date or after it will be returned.
-  -endDate: date string in format: "YYYY-MM-DD". only images that ware imaged form at this date or before it will be returned.
+- endDate: date string in format: "YYYY-MM-DD". only images that ware imaged form at this date or before it will be returned.
