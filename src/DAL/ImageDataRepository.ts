@@ -9,10 +9,12 @@ import { OrderField, SearchOptions } from '../models/searchOptions';
 @EntityRepository(ImageData)
 export class ImageDataRepository extends Repository<ImageData> {
   private readonly mcLogger: MCLogger; //don't override internal repository logger.
+  private readonly defaultSearchPageSize: number;
 
   public constructor() {
     super();
     this.mcLogger = container.resolve(MCLogger); //direct injection don't work here due to being initialized by typeOrm
+    this.defaultSearchPageSize = config.get<number>('search.defaultPageSize');
   }
 
   public async get(id: string): Promise<ImageData | undefined> {
@@ -110,7 +112,7 @@ export class ImageDataRepository extends Repository<ImageData> {
     options: SearchOptions,
     builder: SelectQueryBuilder<ImageData>
   ): SelectQueryBuilder<ImageData> {
-    const defaultPageSize = config.get<number>('search.defaultPageSize');
+    const defaultPageSize = this.defaultSearchPageSize;
     const pageSize = options.pageSize ?? defaultPageSize;
     builder = builder.limit(pageSize);
     if (options.offset != undefined) {

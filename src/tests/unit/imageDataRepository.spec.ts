@@ -179,7 +179,7 @@ describe('Image repository test', () => {
     expect(queryBuilder.limit).toHaveBeenCalledTimes(1);
   });
 
-  it('search sort should be added to search query', async () => {
+  it('search ascending sort should be added to search query', async () => {
     //generate mocks
     const queryBuilder = buildQueryBuilderMock();
     const getQueryBuilder = jest.fn();
@@ -197,6 +197,28 @@ describe('Image repository test', () => {
     expect(queryBuilder.orderBy).toHaveBeenCalledWith(
       `image.${OrderField.IMAGING_TIME.toString()}`,
       'ASC'
+    );
+    expect(queryBuilder.orderBy).toHaveBeenCalledTimes(1);
+  });
+
+  it('search descending sort should be added to search query', async () => {
+    //generate mocks
+    const queryBuilder = buildQueryBuilderMock();
+    const getQueryBuilder = jest.fn();
+    getQueryBuilder.mockReturnValue(queryBuilder);
+    imagesRepo.createQueryBuilder = getQueryBuilder;
+    //test data
+    const searchOptions = new SearchOptions({
+      sort: {
+        desc: true,
+        orderBy: OrderField.IMAGING_TIME,
+      },
+    });
+    //test
+    await imagesRepo.search(searchOptions);
+    expect(queryBuilder.orderBy).toHaveBeenCalledWith(
+      `image.${OrderField.IMAGING_TIME.toString()}`,
+      'DESC'
     );
     expect(queryBuilder.orderBy).toHaveBeenCalledTimes(1);
   });
