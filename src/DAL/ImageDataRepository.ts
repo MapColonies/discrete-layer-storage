@@ -2,16 +2,19 @@ import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
 import { container } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { Geometry } from 'geojson';
+import config from 'config';
 import { ImageData } from '../entity/ImageData';
 import { OrderField, SearchOptions } from '../models/searchOptions';
 
 @EntityRepository(ImageData)
 export class ImageDataRepository extends Repository<ImageData> {
   private readonly mcLogger: MCLogger; //don't override internal repository logger.
+  private readonly defaultSearchPageSize: number;
 
   public constructor() {
     super();
     this.mcLogger = container.resolve(MCLogger); //direct injection don't work here due to being initialized by typeOrm
+    this.defaultSearchPageSize = config.get<number>('search.defaultPageSize');
   }
 
   public async get(id: string): Promise<ImageData | undefined> {
@@ -64,7 +67,7 @@ export class ImageDataRepository extends Repository<ImageData> {
     let builder = this.createQueryBuilder('image');
     builder = this.addSearchFilters(options, builder);
     builder = this.addSearchOrder(options, builder);
-    //TODO: add pagination and limit result size
+    builder = this.addPagination(options, builder);
     return builder.getMany();
   }
 
@@ -102,6 +105,19 @@ export class ImageDataRepository extends Repository<ImageData> {
     }
     const orderByColumn = `image.${orderBy.toString()}`;
     builder = builder.orderBy(orderByColumn, order);
+    return builder;
+  }
+
+  private addPagination(
+    options: SearchOptions,
+    builder: SelectQueryBuilder<ImageData>
+  ): SelectQueryBuilder<ImageData> {
+    const defaultPageSize = this.defaultSearchPageSize;
+    const pageSize = options.pageSize ?? defaultPageSize;
+    builder = builder.limit(pageSize);
+    if (options.offset != undefined) {
+      builder = builder.offset(options.offset);
+    }
     return builder;
   }
 

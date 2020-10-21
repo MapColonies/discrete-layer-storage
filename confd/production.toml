@@ -12,5 +12,6 @@ keys = [
     "/configuration/db/password",
     "/configuration/db/database",
     "/configuration/db/synchronize",
-    "/configuration/db/logging"
+    "/configuration/db/logging",
+    "/configuration/search/defaultPageSize"
 ]
