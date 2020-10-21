@@ -1,1 +1,5 @@
-{}
+{
+  "search": {
+    "defaultPageSize": 20
+  }
+}

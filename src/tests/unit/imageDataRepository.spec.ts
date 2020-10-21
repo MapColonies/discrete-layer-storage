@@ -1,10 +1,11 @@
 //this import must be called before the first import of tsyring
 import 'reflect-metadata';
+import { assert } from 'console';
 import { container } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { ImageDataRepository } from '../../DAL/ImageDataRepository';
 import { ImageData } from '../../entity/ImageData';
-import { SearchOptions } from '../../models/searchOptions';
+import { OrderField, SearchOptions } from '../../models/searchOptions';
 interface SearchOption {
   query: string;
   parameters: [
@@ -78,17 +79,7 @@ describe('Image repository test', () => {
 
   it('search should use all given conditions', async () => {
     //generate mocks
-    const queryBuilder = {
-      where: jest.fn(),
-      andWhere: jest.fn(),
-      setParameter: jest.fn(),
-      getMany: jest.fn(),
-      orderBy: jest.fn(),
-    };
-    queryBuilder.where.mockReturnValue(queryBuilder);
-    queryBuilder.andWhere.mockReturnValue(queryBuilder);
-    queryBuilder.setParameter.mockReturnValue(queryBuilder);
-    queryBuilder.orderBy.mockReturnValue(queryBuilder);
+    const queryBuilder = buildQueryBuilderMock();
     const getQueryBuilder = jest.fn();
     getQueryBuilder.mockReturnValue(queryBuilder);
     imagesRepo.createQueryBuilder = getQueryBuilder;
@@ -132,11 +123,7 @@ describe('Image repository test', () => {
     let options = iterator.next();
     while (options.done != undefined && !options.done) {
       //clear mocks
-      queryBuilder.setParameter.mockClear();
-      queryBuilder.where.mockClear();
-      queryBuilder.andWhere.mockClear();
-      queryBuilder.getMany.mockClear();
-      queryBuilder.orderBy.mockClear();
+      clearQueryBuilderMock(queryBuilder);
       getQueryBuilder.mockClear();
       //test
       const searchOptions = buildSearchOptions(options.value);
@@ -172,7 +159,87 @@ describe('Image repository test', () => {
       options = iterator.next();
     }
   });
+
+  it('search offset and page size should be added to search query', async () => {
+    //generate mocks
+    const queryBuilder = buildQueryBuilderMock();
+    const getQueryBuilder = jest.fn();
+    getQueryBuilder.mockReturnValue(queryBuilder);
+    imagesRepo.createQueryBuilder = getQueryBuilder;
+    //test data
+    const searchOptions = new SearchOptions({
+      pageSize: 15,
+      offset: 38,
+    });
+    //test
+    await imagesRepo.search(searchOptions);
+    expect(queryBuilder.offset).toHaveBeenCalledWith(searchOptions.offset);
+    expect(queryBuilder.offset).toHaveBeenCalledTimes(1);
+    expect(queryBuilder.limit).toHaveBeenCalledWith(searchOptions.pageSize);
+    expect(queryBuilder.limit).toHaveBeenCalledTimes(1);
+  });
+
+  it('search sort should be added to search query', async () => {
+    //generate mocks
+    const queryBuilder = buildQueryBuilderMock();
+    const getQueryBuilder = jest.fn();
+    getQueryBuilder.mockReturnValue(queryBuilder);
+    imagesRepo.createQueryBuilder = getQueryBuilder;
+    //test data
+    const searchOptions = new SearchOptions({
+      sort: {
+        desc: false,
+        orderBy: OrderField.IMAGING_TIME,
+      },
+    });
+    //test
+    await imagesRepo.search(searchOptions);
+    expect(queryBuilder.orderBy).toHaveBeenCalledWith(
+      `image.${OrderField.IMAGING_TIME.toString()}`,
+      'ASC'
+    );
+    expect(queryBuilder.orderBy).toHaveBeenCalledTimes(1);
+  });
 });
+
+interface QueryBuilderMock {
+  where: jest.Mock;
+  andWhere: jest.Mock;
+  setParameter: jest.Mock;
+  getMany: jest.Mock;
+  orderBy: jest.Mock;
+  limit: jest.Mock;
+  offset: jest.Mock;
+}
+
+function buildQueryBuilderMock(): QueryBuilderMock {
+  const queryBuilder = {
+    where: jest.fn(),
+    andWhere: jest.fn(),
+    setParameter: jest.fn(),
+    getMany: jest.fn(),
+    orderBy: jest.fn(),
+    limit: jest.fn(),
+    offset: jest.fn(),
+  };
+  queryBuilder.where.mockReturnValue(queryBuilder);
+  queryBuilder.andWhere.mockReturnValue(queryBuilder);
+  queryBuilder.setParameter.mockReturnValue(queryBuilder);
+  queryBuilder.orderBy.mockReturnValue(queryBuilder);
+  queryBuilder.limit.mockReturnValue(queryBuilder);
+  queryBuilder.offset.mockReturnValue(queryBuilder);
+  return queryBuilder;
+}
+
+function clearQueryBuilderMock(queryBuilder: QueryBuilderMock) {
+  queryBuilder.setParameter.mockClear();
+  queryBuilder.where.mockClear();
+  queryBuilder.andWhere.mockClear();
+  queryBuilder.getMany.mockClear();
+  queryBuilder.orderBy.mockClear();
+  queryBuilder.limit.mockClear();
+  queryBuilder.offset.mockClear();
+}
 
 // Generate all array subsets:
 function* subsets<T>(array: T[], offset = 0): IterableIterator<T[]> {

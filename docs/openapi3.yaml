@@ -113,3 +113,10 @@ components:
           required:
             - desc
             - orderBy
+        pageSize:
+          type: number
+          maximum: 10000
+          example: 30
+        offset:
+          type: number
+          example: 60

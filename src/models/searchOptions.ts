@@ -9,6 +9,9 @@ export class SearchOptions {
   public startDate?: Date;
   public endDate?: Date;
 
+  public offset?: number;
+  public pageSize?: number;
+
   public sort?: {
     desc: boolean;
     orderBy: OrderField;

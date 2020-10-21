@@ -7,27 +7,30 @@
     "level": "{{ getv "/configuration/logger/level" "error" }}"
   },
   "typeOrm": {
-   "type": "{{ getv "/configuration/db/type" "postgres" }}",
-   "host": "{{ getv "/configuration/db/host" "localhost" }}",
-   "port": {{ getv "/configuration/db/port" "5432" }},
-   "username": "{{ getv "/configuration/db/username" "test" }}",
-   "password": "{{ getv "/configuration/db/password" "test" }}",
-   "database": "{{ getv "/configuration/db/database" "test" }}",
-   "synchronize": {{ getv "/configuration/db/synchronize" "true" }},
-   "logging": {{ getv "/configuration/db/logging" "false" }},
-   "entities": [
-      "dist/src/entity/**/*.js"
-   ],
-   "migrations": [
-      "dist/src/migration/**/*.js"
-   ],
-   "subscribers": [
-      "dist/src/subscriber/**/*.js"
-   ],
-   "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
+      "type": "{{ getv "/configuration/db/type" "postgres" }}",
+      "host": "{{ getv "/configuration/db/host" "localhost" }}",
+      "port": {{ getv "/configuration/db/port" "5432" }},
+      "username": "{{ getv "/configuration/db/username" "test" }}",
+      "password": "{{ getv "/configuration/db/password" "test" }}",
+      "database": "{{ getv "/configuration/db/database" "test" }}",
+      "synchronize": {{ getv "/configuration/db/synchronize" "true" }},
+      "logging": {{ getv "/configuration/db/logging" "false" }},
+      "entities": [
+         "dist/src/entity/**/*.js"
+      ],
+      "migrations": [
+         "dist/src/migration/**/*.js"
+      ],
+      "subscribers": [
+         "dist/src/subscriber/**/*.js"
+      ],
+      "cli": {
+         "entitiesDir": "src/entity",
+         "migrationsDir": "src/migration",
+         "subscribersDir": "src/subscriber"
+      }
+   },
+   "search":{
+      "defaultPageSize": {{getv "/configuration/search/defaultPageSize" "20"}}
    }
-}
 }
