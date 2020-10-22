@@ -3,10 +3,10 @@ import { container } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { Geometry } from 'geojson';
 import config from 'config';
-import { ImageData } from '../entity/ImageData';
+import { ImageData } from '../entity/imageData';
 import { OrderField, SearchOptions } from '../models/searchOptions';
-import { ConflictError } from '../exceptions/ConflictError';
-import { NotFoundError } from '../exceptions/NotFoundError';
+import { ConflictError } from '../exceptions/conflictError';
+import { NotFoundError } from '../exceptions/notFoundError';
 
 @EntityRepository(ImageData)
 export class ImageDataRepository extends Repository<ImageData> {

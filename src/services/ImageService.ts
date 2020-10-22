@@ -1,11 +1,11 @@
 import { injectable } from 'tsyringe';
 import { ImageMetadata } from '@map-colonies/mc-model-types';
 import { Geometry } from 'geojson';
-import { ConnectionManager } from '../DAL/ConnectionManager';
-import { ImageDataRepository } from '../DAL/ImageDataRepository';
-import { ImageData } from '../entity/ImageData';
+import { ConnectionManager } from '../DAL/connectionManager';
+import { ImageDataRepository } from '../DAL/imageDataRepository';
+import { ImageData } from '../entity/imageData';
 import { SearchOptions } from '../models/searchOptions';
-import { NotFoundError } from '../exceptions/NotFoundError';
+import { NotFoundError } from '../exceptions/notFoundError';
 
 @injectable()
 export class ImagesService {

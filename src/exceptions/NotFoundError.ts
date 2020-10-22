@@ -1,5 +1,5 @@
 import HttpStatus from 'http-status-codes';
-import { HttpError } from './HttpError';
+import { HttpError } from './httpError';
 
 export class NotFoundError extends HttpError {
   public constructor(message: string);

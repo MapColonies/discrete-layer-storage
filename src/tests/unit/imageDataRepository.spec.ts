@@ -2,11 +2,11 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
-import { ImageDataRepository } from '../../DAL/ImageDataRepository';
-import { ImageData } from '../../entity/ImageData';
+import { ImageDataRepository } from '../../DAL/imageDataRepository';
+import { ImageData } from '../../entity/imageData';
 import { OrderField, SearchOptions } from '../../models/searchOptions';
-import { ConflictError } from '../../exceptions/ConflictError';
-import { NotFoundError } from '../../exceptions/NotFoundError';
+import { ConflictError } from '../../exceptions/conflictError';
+import { NotFoundError } from '../../exceptions/notFoundError';
 interface SearchOption {
   query: string;
   parameters: [

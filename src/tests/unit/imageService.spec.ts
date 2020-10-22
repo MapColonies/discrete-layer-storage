@@ -1,9 +1,9 @@
 //this import must be called before the first import of tsyring
 import 'reflect-metadata';
 import { ImageMetadata } from '@map-colonies/mc-model-types';
-import { ImageData } from '../../entity/ImageData';
-import { ImagesService } from '../../services/ImageService';
-import { ConnectionManager } from '../../DAL/ConnectionManager';
+import { ImageData } from '../../entity/imageData';
+import { ImagesService } from '../../services/imageService';
+import { ConnectionManager } from '../../DAL/connectionManager';
 
 //init constant test data
 const model: ImageMetadata = {
