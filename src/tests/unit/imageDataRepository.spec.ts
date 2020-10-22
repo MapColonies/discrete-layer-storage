@@ -1,11 +1,12 @@
 //this import must be called before the first import of tsyring
 import 'reflect-metadata';
-import { assert } from 'console';
 import { container } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { ImageDataRepository } from '../../DAL/ImageDataRepository';
 import { ImageData } from '../../entity/ImageData';
 import { OrderField, SearchOptions } from '../../models/searchOptions';
+import { ConflictError } from '../../exceptions/ConflictError';
+import { NotFoundError } from '../../exceptions/NotFoundError';
 interface SearchOption {
   query: string;
   parameters: [
@@ -44,7 +45,7 @@ describe('Image repository test', () => {
     //test
     await expect(async () => {
       await imagesRepo.createAndSave(data);
-    }).rejects.toThrow();
+    }).rejects.toThrow(ConflictError);
   });
 
   it('create should not throw if value dont exist', async () => {
@@ -56,7 +57,9 @@ describe('Image repository test', () => {
   it('update should throw if value dont exist', async () => {
     (imagesRepo.findOne as jest.Mock).mockResolvedValue(undefined);
     //test
-    await expect(imagesRepo.updateImageDate(data)).rejects.toThrow();
+    await expect(imagesRepo.updateImageDate(data)).rejects.toThrow(
+      NotFoundError
+    );
   });
 
   it('update should not throw if value exists', async () => {
@@ -74,7 +77,7 @@ describe('Image repository test', () => {
   it('delete should throw if value dont exist', async () => {
     (imagesRepo.findOne as jest.Mock).mockResolvedValue(undefined);
     //test
-    await expect(imagesRepo.deleteImageData('')).rejects.toThrow();
+    await expect(imagesRepo.deleteImageData('')).rejects.toThrow(NotFoundError);
   });
 
   it('search should use all given conditions', async () => {

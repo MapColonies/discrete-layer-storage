@@ -4,6 +4,7 @@ import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { injectable } from 'tsyringe';
 import { StatusCodes } from 'http-status-codes';
 import { InputValidationError } from 'openapi-validator-middleware';
+import { HttpError } from '../exceptions/HttpError';
 
 @injectable()
 export class ErrorHandler {
@@ -27,17 +28,21 @@ export class ErrorHandler {
             validationErrors: err.errors,
           },
         };
-        res.status(StatusCodes.BAD_REQUEST).json(resBody);
+      } else if (err instanceof HttpError) {
+        resBody.error = {
+          statusCode: err.status,
+          message: err.message,
+        };
       } else {
         this.logger.error(
           `${req.method} request to ${req.originalUrl}  has failed with error: ${err.message}`
         );
-        resBody.error={
+        resBody.error = {
           statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-          message: 'Internal Server Error'
-        }
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(resBody);
+          message: 'Internal Server Error',
+        };
       }
+      res.status(resBody.error.statusCode).json(resBody);
     };
   }
 }
