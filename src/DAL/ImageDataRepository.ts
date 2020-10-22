@@ -5,6 +5,8 @@ import { Geometry } from 'geojson';
 import config from 'config';
 import { ImageData } from '../entity/ImageData';
 import { OrderField, SearchOptions } from '../models/searchOptions';
+import { ConflictError } from '../exceptions/ConflictError';
+import { NotFoundError } from '../exceptions/NotFoundError';
 
 @EntityRepository(ImageData)
 export class ImageDataRepository extends Repository<ImageData> {
@@ -30,8 +32,9 @@ export class ImageDataRepository extends Repository<ImageData> {
       this.mcLogger.info(
         `duplicate value error has occurred when creating image "${image.id}"`
       );
-      //TODO: replace with custom exception type and handle in service
-      throw new Error('duplicate entry inserted');
+      throw new ConflictError(
+        `duplicate entry: record with id "${image.id}" already exists.`
+      );
     }
   }
 
@@ -44,8 +47,9 @@ export class ImageDataRepository extends Repository<ImageData> {
       this.mcLogger.info(
         `attempt to update non existing record "${image.id}" has occurred`
       );
-      //TODO: replace with custom exception type and handle in service
-      throw new Error('invalid update');
+      throw new NotFoundError(
+        `invalid update: record with id "${image.id}" was not found.`
+      );
     }
   }
 
@@ -58,8 +62,7 @@ export class ImageDataRepository extends Repository<ImageData> {
       this.mcLogger.info(
         `attempt to delete non existing record "${id}" has occurred`
       );
-      //TODO: replace with custom exception type and handle in service
-      throw new Error('image to delete was not found');
+      throw new NotFoundError('image to delete was not found');
     }
   }
 

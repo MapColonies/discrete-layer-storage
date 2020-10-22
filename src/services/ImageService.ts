@@ -5,6 +5,7 @@ import { ConnectionManager } from '../DAL/ConnectionManager';
 import { ImageDataRepository } from '../DAL/ImageDataRepository';
 import { ImageData } from '../entity/ImageData';
 import { SearchOptions } from '../models/searchOptions';
+import { NotFoundError } from '../exceptions/NotFoundError';
 
 @injectable()
 export class ImagesService {
@@ -15,8 +16,7 @@ export class ImagesService {
     const repository = await this.getRepository();
     const image = await repository.get(id);
     if (!image) {
-      //TODO: replace with custom error type
-      throw new Error('image data was not found');
+      throw new NotFoundError('image data was not found');
     }
     return this.entityToModel(image);
   }
