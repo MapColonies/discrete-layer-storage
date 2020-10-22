@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ImagesRouter } from './Images';
+import { ImagesRouter } from './images';
 import { swaggerRouter } from './swagger';
 
 const globalRouter = Router();
