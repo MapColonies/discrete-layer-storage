@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status-codes';
 import { injectable } from 'tsyringe';
 import { ImageMetadata, ApiHttpResponse } from '@map-colonies/mc-model-types';
-import { ImagesService } from '../services/ImageService';
+import { ImagesService } from '../services/imageService';
 import { SearchOptions } from '../models/searchOptions';
 
 @injectable()

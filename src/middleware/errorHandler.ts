@@ -4,7 +4,7 @@ import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { injectable } from 'tsyringe';
 import { StatusCodes } from 'http-status-codes';
 import { InputValidationError } from 'openapi-validator-middleware';
-import { HttpError } from '../exceptions/HttpError';
+import { HttpError } from '../exceptions/httpError';
 
 @injectable()
 export class ErrorHandler {
