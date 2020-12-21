@@ -72,7 +72,7 @@
     "reflect-metadata": "^0.1.13",
     "swagger-ui-express": "^4.1.4",
     "tsyringe": "^4.3.0",
-    "typeorm": "0.2.26",
+    "typeorm": "0.2.29",
     "yamljs": "^0.3.0"
   },
   "jest": {
